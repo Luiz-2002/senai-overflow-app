@@ -1,6 +1,6 @@
+import { StatusBar } from "react-native";
 import styled from "styled-components/native";
 import colors from "./colors";
-import { StatusBar } from "react-native";
 
 export const TextDefault = styled.Text`
   color: ${colors.light};

@@ -1,12 +1,11 @@
 import React, { useState } from "react";
+import { Alert, StatusBar, TextInput, TouchableOpacity } from "react-native";
+import Button from "../../components/Button";
+import { api } from "../../services/api";
+import { signIn } from "../../services/security";
+import colors from "../../styles/colors";
 import { Container, ToolBar, TextToolBar } from "../../styles/stylesGlobal";
 import { Content, Label, TextInputLogin } from "./styles";
-import { TextInput, Alert } from "react-native";
-import colors from "../../styles/colors";
-import Button from "../../components/Button";
-import { StatusBar } from "react-native";
-import { signIn } from "../../services/security";
-import { api } from "../../services/api";
 
 function Login({ navigation }) {
   StatusBar.setBackgroundColor(colors.primary);
@@ -15,6 +14,8 @@ function Login({ navigation }) {
     email: "",
     password: "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleEmail = (e) => {
     setLogin({ ...login, email: e });
@@ -30,8 +31,11 @@ function Login({ navigation }) {
 
       signIn(response.data);
 
+      setIsLoading(false);
+
       navigation.navigate("Home");
     } catch (error) {
+      setIsLoading(false);
       console.log(error);
       if (error.response) {
         Alert.alert("Ops", error.response.data.error);
@@ -42,7 +46,7 @@ function Login({ navigation }) {
   return (
     <Container>
       <ToolBar>
-        <TextToolBar>Faça Login </TextToolBar>
+        <TextToolBar>Faça o Login</TextToolBar>
       </ToolBar>
       <Content>
         <Label>E-Mail</Label>
@@ -52,18 +56,19 @@ function Login({ navigation }) {
           placeholder="Digite o seu e-mail"
           onChangeText={handleEmail}
         />
-        <Label>senha</Label>
+
+        <Label>Senha</Label>
         <TextInputLogin
           autoCompleteType="password"
           placeholder="Digite a sua senha"
-          secureTextEntry={true}
           placeholderTextColor={colors.lightTransparent}
+          secureTextEntry={true}
           onChangeText={handlePassword}
         />
         <Button
           handlePress={handleSubmit}
-          Text="Entrar"
-          disabled={login.email === "" && login.password === ""}
+          text={isLoading ? "verificando..." : "Entrar"}
+          disabled={isLoading || login.email === "" || login.password === ""}
           style={{ width: "96%" }}
         />
       </Content>

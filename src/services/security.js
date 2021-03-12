@@ -1,38 +1,37 @@
-//import jwtDecode from "jwt-decode";
 import { api } from "./api";
-import AsyncStorege from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const USER_KEY = "@user";
 
 export const signIn = (user) => {
-  AsyncStorege.setItem(USER_KEY, JSON.stringify(user));
+  AsyncStorage.setItem(USER_KEY, JSON.stringify(user));
 
   //setando o token como padrão em todas as requisições
   api.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;
 };
 
 export const signOut = () => {
-  AsyncStorege.removeItem(USER_KEY);
+  AsyncStorage.removeItem(USER_KEY);
 
   api.defaults.headers.common["Authorization"] = undefined;
 };
 
 export const getUser = async () => {
-  const { student } = JSON.parse(await AsyncStorege.getItem(USER_KEY));
+  const { student } = JSON.parse(await AsyncStorage.getItem(USER_KEY));
 
   return student;
 };
 
 export const setUser = async (student) => {
-  const user = JSON.parse(await AsyncStorege.getItem(USER_KEY));
+  const user = JSON.parse(await AsyncStorage.getItem(USER_KEY));
 
   user.student = student;
 
-  AsyncStorege.setItem(USER_KEY, JSON.stringify(user));
+  AsyncStorage.setItem(USER_KEY, JSON.stringify(user));
 };
 
 export const isSignedIn = async () => {
-  const user = JSON.parse(await AsyncStorege.getItem(USER_KEY));
+  const user = JSON.parse(await AsyncStorage.getItem(USER_KEY));
 
   if (user && user.token) {
     api.defaults.headers.common["Authorization"] = `Bearer ${user.token}`;

@@ -24,6 +24,8 @@ export const ToolBar = styled.View`
 
   justify-content: center;
   align-items: center;
+
+  z-index: 9;
 `;
 
 export const TextToolBar = styled(TextDefault)`
@@ -37,4 +39,19 @@ export const TextToolBar = styled(TextDefault)`
 export const IconSignOut = styled(Icon)`
   font-size: 25px;
   color: ${colors.dark};
+`;
+
+export const ImageLogo = styled.Image`
+  width: 60px;
+  height: 60px;
+  margin-top: 20px;
+
+  border-width: 2px;
+  border-color: ${colors.dark};
+  border-radius: 30px;
+`;
+
+export const LoadingFeed = styled.ActivityIndicator`
+  position: absolute;
+  bottom: 4px;
 `;

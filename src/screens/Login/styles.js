@@ -26,4 +26,5 @@ export const TextInputLogin = styled.TextInput`
 
   background-color: ${colors.darkGray};
   font-size: 20px;
+  border-radius: 4px;
 `;

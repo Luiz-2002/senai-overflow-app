@@ -1,7 +1,8 @@
 import styled from "styled-components/native";
 import colors from "../../styles/colors";
 import { TextDefault } from "../../styles/stylesGlobal";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon  from "react-native-vector-icons/FontAwesome";
+
 
 export const Container = styled.View`
   width: 96%;

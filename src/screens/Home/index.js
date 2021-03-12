@@ -5,12 +5,21 @@ import {
   StatusBar,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import CardQuestion from "../../components/CardQuestion";
 import { api } from "../../services/api";
-import colors from "../../styles/colors";
-import { Container, TextToolBar, ToolBar, IconSignOut } from "./styles";
 import { signOut } from "../../services/security";
+import colors from "../../styles/colors";
+import {
+  Container,
+  IconSignOut,
+  TextToolBar,
+  ToolBar,
+  ImageLogo,
+  LoadingFeed,
+} from "./styles";
+import imgLogo from "../../../assets/logo.png";
 
 function Home({ navigation }) {
   StatusBar.setBackgroundColor(colors.primary);
@@ -46,21 +55,41 @@ function Home({ navigation }) {
     setIsLoadingFeed(false);
   };
 
+  // useEffect(() => {
+  //   loadQuestions();
+  // }, []);
+
   useEffect(() => {
-    loadQuestions();
-  }, []);
+    if (questions.length === 0) {
+      loadQuestions();
+    }
+  }, [questions]);
 
   const handleSignOut = () => {
     signOut();
     navigation.navigate("Login");
   };
 
+  const handleRefresh = () => {
+    setPage(1);
+    setQuestions([]);
+  };
+
   return (
     <Container>
       <ToolBar>
+        <TouchableOpacity
+          onPress={handleRefresh}
+          style={{ position: "absolute", left: 4 }}
+        >
+          <ImageLogo source={imgLogo} />
+        </TouchableOpacity>
         <TextToolBar>SENAI OVERFLOW</TextToolBar>
-        <TouchableOpacity style={{ position: "absolute", right: 4 }}>
-          <IconSignOut name="sign-out" onPress={handleSignOut} />
+        <TouchableOpacity
+          onPress={handleSignOut}
+          style={{ position: "absolute", right: 4 }}
+        >
+          <IconSignOut name="sign-out" />
         </TouchableOpacity>
       </ToolBar>
       <FlatList
@@ -73,6 +102,7 @@ function Home({ navigation }) {
           <CardQuestion question={question} />
         )}
       />
+      {isLoadingFeed && <LoadingFeed size="large" color={colors.primary} />}
     </Container>
   );
 }
